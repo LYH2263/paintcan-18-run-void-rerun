@@ -8,8 +8,14 @@ def init_db():
     CREATE TABLE IF NOT EXISTS rooms(id INTEGER PRIMARY KEY, name TEXT, length REAL, width REAL, height REAL);
     CREATE TABLE IF NOT EXISTS openings(id INTEGER PRIMARY KEY, room_id INTEGER, kind TEXT, w REAL, h REAL);
     CREATE TABLE IF NOT EXISTS settings(key TEXT PRIMARY KEY, value TEXT);
-    CREATE TABLE IF NOT EXISTS calc_runs(id INTEGER PRIMARY KEY, kind TEXT, room_id INTEGER, input_json TEXT, result_json TEXT, created_at TEXT);
+    CREATE TABLE IF NOT EXISTS calc_runs(id INTEGER PRIMARY KEY, kind TEXT, room_id INTEGER, input_json TEXT, result_json TEXT, created_at TEXT, voided_at TEXT, supersedes_id INTEGER);
     """)
+    # 旧库补列：作废时间戳与前序编号（幂等）
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(calc_runs)").fetchall()}
+    if "voided_at" not in cols:
+        conn.execute("ALTER TABLE calc_runs ADD COLUMN voided_at TEXT")
+    if "supersedes_id" not in cols:
+        conn.execute("ALTER TABLE calc_runs ADD COLUMN supersedes_id INTEGER")
     if conn.execute("SELECT COUNT(*) c FROM rooms").fetchone()["c"] == 0:
         conn.execute("INSERT INTO rooms(name,length,width,height) VALUES ('客厅',5.0,4.0,2.8)")
         conn.execute("INSERT INTO rooms(name,length,width,height) VALUES ('卧室(多种洞)',4.0,3.2,2.8)")

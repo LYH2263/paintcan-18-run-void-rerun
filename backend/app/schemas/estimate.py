@@ -4,3 +4,4 @@ class EstimateRequest(BaseModel):
     coats: int | None = None
     coverage: float | None = None
     persist: bool = True
+    supersedes_id: int | None = None

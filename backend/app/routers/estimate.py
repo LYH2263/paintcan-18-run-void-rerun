@@ -5,6 +5,6 @@ router = APIRouter()
 @router.post("/estimate")
 def post_estimate(body: EstimateRequest):
     with PaintService() as s:
-        r = s.estimate(body.room_id, body.persist, body.coats, body.coverage)
+        r = s.estimate(body.room_id, body.persist, body.coats, body.coverage, body.supersedes_id)
         if not r: raise HTTPException(404)
         return r
