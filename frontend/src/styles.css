@@ -10,3 +10,7 @@ table { width:100%; border-collapse:collapse; }
 th,td { border:1px solid #aacce0; padding:0.35rem; }
 .hero-num { font-size:2rem; color: var(--line); font-weight:700; }
 a { color: var(--line); }
+tr.voided td { color:#8aa5b1; }
+.badge { background:#b3543f; color:#fff; padding:0.1rem 0.4rem; border-radius:3px; font-size:0.85em; }
+.error { color:#b3543f; }
+td button { margin-right:0.3rem; }
